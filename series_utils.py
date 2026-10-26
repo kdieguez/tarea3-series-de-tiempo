@@ -58,3 +58,22 @@ def serie_diaria(df_limpio):
     serie = serie[serie.index < DIA_INCOMPLETO]
     serie.name = "venta"
     return serie
+
+def graficar_acf(r, n, titulo, archivo):
+    import matplotlib.pyplot as plt
+    kmax = len(r)
+    banda = 1.96 / np.sqrt(n)
+    k = np.arange(1, kmax + 1)
+    fig, ax = plt.subplots(figsize=(9, 4))
+    ax.vlines(k, 0, r, color="steelblue", linewidth=2)
+    ax.scatter(k, r, color="steelblue", zorder=3)
+    ax.axhline(0, color="black", linewidth=0.8)
+    ax.axhline(banda, color="red", linestyle="--", linewidth=1)
+    ax.axhline(-banda, color="red", linestyle="--", linewidth=1)
+    ax.set_xticks(k)
+    ax.set_xlabel("Rezago k (días abiertos)")
+    ax.set_ylabel("$r_k$")
+    ax.set_title(titulo)
+    plt.tight_layout()
+    plt.savefig(archivo, dpi=150, bbox_inches="tight")
+    plt.close()
