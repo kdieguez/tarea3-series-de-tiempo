@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from scipy import stats
 
 def acf_manual(y, kmax):
@@ -37,3 +38,23 @@ def ljung_box(y, m, K=0):
     Q = n * (n + 2) * np.sum(r ** 2 / (n - k))
     p = stats.chi2.sf(Q, df=m - K)    
     return Q, p
+
+FIN_ENTRENAMIENTO = pd.Timestamp("2011-09-30")
+ORIGEN_PRUEBA = pd.Timestamp("2011-10-02")
+INICIO_PRUEBA = pd.Timestamp("2011-10-03")
+FIN_PRUEBA = pd.Timestamp("2011-12-08")
+DIA_INCOMPLETO = pd.Timestamp("2011-12-09")
+
+
+def serie_diaria(df_limpio):
+    """
+    Venta neta diaria sobre el calendario completo, con los días sin
+    transacciones como NaN y sin el último día (incompleto).
+    """
+    fecha = df_limpio["InvoiceDate"].dt.normalize()
+    venta = df_limpio.groupby(fecha)["Importe"].sum()
+    calendario = pd.date_range(venta.index.min(), venta.index.max(), freq="D")
+    serie = venta.reindex(calendario)
+    serie = serie[serie.index < DIA_INCOMPLETO]
+    serie.name = "venta"
+    return serie
