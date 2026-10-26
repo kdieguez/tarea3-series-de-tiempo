@@ -1,0 +1,7 @@
+orden,regla,filas_eliminadas,importe_eliminado
+1,(a) Duplicados exactos,5268,21740.98
+2,(b) Facturas que no son venta ni cancelación,3,-11062.06
+3,(c1) Pares venta / cancelación manual del mismo monto,14,-3.552713678800501e-15
+4,(c2) Resto de códigos que no son productos,2857,10454.684000000001
+5,(d) Precio cero o negativo,2492,0.0
+6,(e) Cantidad negativa fuera de cancelaciones,0,0.0
